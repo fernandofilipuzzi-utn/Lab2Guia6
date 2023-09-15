@@ -28,6 +28,8 @@ namespace Ej1
                 "40 675 458; (343)6274575; agustina.s@gmail.com",
                 "256-4n5A8; 1161116127; jorgel - ina@gmail.com",
                 "256458; 1161117a7127; jorgelina@gmail.com",
+                "2506458; 11611177127; @gmail.com",
+                "2506458; 11611177127; mariano@",
             };
 
             for (int linea = 1; linea < lista.Count; linea++)
@@ -56,10 +58,11 @@ namespace Ej1
 
                 //normalizar telefono
                 telefono = telefono.Replace("(","").Replace(")", "").Replace("-", "").Replace(" ", "");
+                //verificar longitud telefono
                 bool esLongitudTel = telefono.Length == 10 || telefono.Length == 10;
-                #region verificar si solo hay caracteres numéricos
+                //verificar si solo hay caracteres numéricos
                 bool tieneChrValidosTel = true;
-                StringBuilder msgChrNoValidosTel = new StringBuilder("");
+                StringBuilder msgChrNoValidosTel = new StringBuilder();
                 for (int idx = 0; idx < telefono.Length; idx++)
                 {
                     bool esValido = Char.IsNumber(telefono[idx]);
@@ -67,27 +70,74 @@ namespace Ej1
                     if (esValido==false)
                         msgChrNoValidosTel.Append( $"{{pos:{idx}, char:{telefono[idx]}}} " );
                 }
-                #endregion
+                //
 
-                //falta el email
-
-                
-                if (esLongitudDNI == false || tieneChrValidosDNI == false ||
-                        esLongitudTel == false || tieneChrValidosTel == false)
+                email = email.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                //verificar ocurrencias de @ ==1
+                string[] camposEmail = email.Split('@');
+                bool verificaArroba = camposEmail.Length == 2;
+                //
+                string usr = camposEmail[0];
+                bool esLongitudUsr = usr.Length > 0;
+                //
+                bool tieneChrValidosUsr = true;
+                string msgChrNoValidosUsr = "";
+                for (int idx = 0; idx < usr.Length; idx++)
                 {
-                    listBox1.Items.Add($"Linea {linea}: error!");
+                    bool esValido = usr[idx]!='+' && usr[idx] != '-' && usr[idx] != '\\';
+                    if (idx == 0) esValido &= Char.IsNumber(usr[idx]) == false;
+
+                    tieneChrValidosUsr &= esValido;
+                    if (esValido == false)
+                        msgChrNoValidosUsr += $"{{pos:{idx}, char:{usr[idx]}}} ";
+                }
+                //
+                string dom = camposEmail[1];
+                bool esLongitudDom = dom.Length > 0;
+                //
+                bool tieneChrValidosDom = true;
+                string msgChrNoValidosDom = "";
+                for (int idx = 0; idx < dom.Length; idx++)
+                {
+                    bool esValido = dom[idx] != '+' && dom[idx] != '-' && dom[idx] != '\\';
+                    if (idx == 0) esValido &= Char.IsNumber(dom[idx]) == false;
+
+                    tieneChrValidosDom &= esValido;
+                    if (esValido == false)
+                        msgChrNoValidosDom += $"{{pos:{idx}, char:{dom[idx]}}} ";
+                }
+                //
+
+                if (esLongitudDNI == false || tieneChrValidosDNI == false ||
+                        esLongitudTel == false || tieneChrValidosTel == false ||
+                        verificaArroba==false||
+                            esLongitudUsr==false || tieneChrValidosUsr==false||
+                            esLongitudDom == false || tieneChrValidosDom == false )
+                {
+                    listBox1.Items.Add($"Linea {linea}: Error! {lista[linea]}.");
 
                     if(esLongitudDNI==false)
-                        listBox1.Items.Add($"\t DNI:valor esperado entre 7 y 8 digitos");
+                        listBox1.Items.Add($"\t DNI: Valor esperado entre 7 y 8 digitos.");
                     if (tieneChrValidosDNI == false)
                         listBox1.Items.Add($"\t DNI: {msgChrNoValidosDNI}");
 
                     if (esLongitudTel == false)
-                        listBox1.Items.Add($"\t TELEFONO: valor esperado entre 10 digitos");
+                        listBox1.Items.Add($"\t TELEFONO: Valor esperado entre 10 digitos.");
                     if (tieneChrValidosTel == false)
                         listBox1.Items.Add($"\t TELEFONO: {msgChrNoValidosTel}");
 
                     //terminar.
+                    if (verificaArroba == false)
+                        listBox1.Items.Add($"\t EMAIL: Formato no válido.");
+                    if (esLongitudUsr == false)
+                        listBox1.Items.Add($"\t EMAIL: Formato del usuario no válido.");
+                    if (tieneChrValidosUsr == false)
+                        listBox1.Items.Add($"\t EMAIL: {msgChrNoValidosUsr}");
+                    //
+                    if (esLongitudDom == false)
+                        listBox1.Items.Add($"\t EMAIL: Formato del dominio no válido.");
+                    if (tieneChrValidosDom == false)
+                        listBox1.Items.Add($"\t EMAIL: {msgChrNoValidosDom}");
                 }
             }
         }

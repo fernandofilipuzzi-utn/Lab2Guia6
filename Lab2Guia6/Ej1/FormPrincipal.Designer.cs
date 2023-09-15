@@ -35,7 +35,7 @@ namespace Ej1
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(326, 22);
+            this.button1.Location = new System.Drawing.Point(363, 26);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(126, 48);
             this.button1.TabIndex = 0;
@@ -48,17 +48,17 @@ namespace Ej1
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 12);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(308, 342);
+            this.listBox1.Size = new System.Drawing.Size(345, 342);
             this.listBox1.TabIndex = 1;
             // 
-            // Form1
+            // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(459, 367);
+            this.ClientSize = new System.Drawing.Size(501, 367);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Name = "FormPrincipal";
             this.Text = "Form1";
             this.ResumeLayout(false);
 
