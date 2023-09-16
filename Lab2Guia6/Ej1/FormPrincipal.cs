@@ -21,6 +21,7 @@ namespace Ej1
         {
             lbResultados.Items.Clear();
 
+            /*listado con fallos
             List<string> lista = new List<string>
             {
                 "dni; telefono; email; monto",
@@ -35,7 +36,25 @@ namespace Ej1
                 "4446452; 11611177127 ; mariano@",
                 " 3506452; 11611177127 ; mariano@;234.234"
             };
+            */
 
+            /*listado sin con fallos*/
+            List<string> lista = new List<string>
+            {
+                "dni; telefono; email; monto",//cabecera
+                "25.655.458; 343-4627725; ernestina.m@gmail.com; 323,2",
+                "40 675 458;(343)6274575; agustina.s@gmail.com; 9000,2",
+                "22256458; 11-61116127; jorgelina.green@gmail.com;  3232,2",
+                "1256458; 11-61177127; alejandra.dim@gmail.com; 272,2",
+                "21064008; 11-51317121 ; ivana.campos@gmail.com;342,23",
+                "2706458; 1161277121 ; mariano.campos@gmail.com;234,234",
+                "4106458; 11-61114627 ; mario.nieves@hotmail.com;234,234",
+                "3406454; 11-61541121 ; claudiosch@hotmail.com;234,234",
+                "4446452; 11-61117127 ; chiguan@yahoo.com.ar;234,234",
+                " 3506452; 11-61467127 ; mariano@chat.com.ar;234,234"
+            };
+
+            bool ok = true;
             for (int linea = 1; linea < lista.Count; linea++)
             {
                 string[] campos = lista[linea].Split(';');
@@ -141,14 +160,14 @@ namespace Ej1
                     //
                     //verificar ocurrencias de ',' <=1
                     string[] camposMonto = monto.Split(',');
-                    bool verificaComa = camposMonto.Length <= 1;
+                    bool verificaComa = camposMonto.Length <= 2;
                     //
                     //verificar si solo hay caracteres numéricos
                     bool tieneChrValidosMonto = true;
                     string msgChrNoValidosMonto = "";
                     for (int idx = 0; idx < monto.Length; idx++)
                     {
-                        bool esValido = Char.IsNumber(monto[idx]) || monto[idx] != ',';
+                        bool esValido = Char.IsNumber(monto[idx]) || monto[idx] == ',';
 
                         tieneChrValidosMonto &= esValido;
                         if (esValido == false)
@@ -193,6 +212,8 @@ namespace Ej1
                             lbResultados.Items.Add($"\t MONTO: Formato no válido, la coma es separador decimal.");
                         if (tieneChrValidosMonto == false)
                             lbResultados.Items.Add($"\t MONTO: {msgChrNoValidosMonto}");
+                        
+                        ok &= false;
                     }
                 }
                 else
@@ -200,8 +221,11 @@ namespace Ej1
                     lbResultados.Items.Add($"Linea {linea+1}: Error!");
                     lbResultados.Items.Add($"\t CADENA DE ENTRADA: {{{lista[linea]}}}");
                     lbResultados.Items.Add($"\t CANTIDAD DE CAMPOS: {campos.Length}, es menor a la cantidad esperada(4).");
+                    ok &= false;
                 }
             }
+            if (ok)
+                lbResultados.Items.Add($"ok! listado sin errores");
         }
     }
 }
