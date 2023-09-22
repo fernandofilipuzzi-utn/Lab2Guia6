@@ -21,51 +21,53 @@ namespace Ej1
         {
             lbResultados.Items.Clear();
 
-            /*listado con fallos
+            /*listado con fallos*/
             List<string> lista = new List<string>
             {
-                "dni; telefono; email; monto",
-                "25.655.458; 343 - 62775; ernestina.m @gmail.com; 323,2",
-                "40 675 458; (343)6274575; agustina.s@gmail.com; 9000,2",
-                "256-4n5A8; 1161116127; jorgel - ina@gmail.com;  3232,2",
-                "256458; 1161117a7127; jorgelina@gmail.com; null",
-                "2506458; 11611177127; @gmail.com;",
-                "2706458; 11611177127 ; mariano.campos@gmail.com;234.234",
-                "2106458; 11611177127 ; mariano@;234.234",
-                "3406454; 11611177127 ; mariano@;234.234",
-                "4446452; 11611177127 ; mariano@",
-                " 3506452; 11611177127 ; mariano@;234.234"
+                "dni; Apellido, Nombre; telefono; email; monto",
+                "25.655.458;Gales Ernestina ;343 - 62775; ernestina.g @gmail.com; 323,2",
+                "40 675 458;Herrera, Agustina; (343)6274575; agustina.s@gmail.com; 9000,2",
+                "256-4n5A8;Lorenzo, Jorgelina; 1161116127; jorgel - ina@gmail.com;  3232,2",
+                "256458;Bushman, Jorleina; 1161117a7127; jorgelina@gmail.com; null",
+                "2506458;Menfis, Marciano Laureado; 11611177127; @gmail.com;",
+                "2706458;Yamamoto, Pedro ;11611177127 ; yama.que.yama@gmail.com;234.234",
+                "2106458;Mimoto, Mariano; 11611177127 ; mariano@;234.234",
+                "3406454;Artigas, José Gervasio; 11611177127 ; mariano@;234.234",
+                "4446452;Roca, Julio Argentino; 11611177127 ; roca@;",
+                "3506452;Perón, Juand Domingo; 11611177127 ; juanito@;234.234"
             };
-            */
 
-            /*listado sin con fallos*/
+
+            /*listado sin con fallos
             List<string> lista = new List<string>
             {
-                "dni; telefono; email; monto",//cabecera
-                "25.655.458; 343-4627725; ernestina.m@gmail.com; 323,2",
-                "40 675 458;(343)6274575; agustina.s@gmail.com; 9000,2",
-                "22256458; 11-61116127; jorgelina.green@gmail.com;  3232,2",
-                "1256458; 11-61177127; alejandra.dim@gmail.com; 272,2",
-                "21064008; 11-51317121 ; ivana.campos@gmail.com;342,23",
-                "2706458; 1161277121 ; mariano.campos@gmail.com;234,234",
-                "4106458; 11-61114627 ; mario.nieves@hotmail.com;234,234",
-                "3406454; 11-61541121 ; claudiosch@hotmail.com;234,234",
-                "4446452; 11-61117127 ; chiguan@yahoo.com.ar;234,234",
-                " 3506452; 11-61467127 ; mariano@chat.com.ar;234,234"
+                "dni; Apellido, Nombre; telefono; email; monto",
+                "25.655.458;Gales Ernestina ;343 - 6425775; ernestina.g@gmail.com; 323,2",
+                "40 675 458;Herrera, Agustina; (343)6274575; agustina.s@gmail.com; 9000,2",
+                "2506458;Lorenzo, Jorgelina; 1161116127; jorgelina@gmail.com;  3232,2",
+                "2564058;Bushman, Jorgelina; 1161117127; jorgelinab@gmail.com; 1253,88",
+                "2506458;Menfis, Marciano Laureado; 1161117127; marcianito@gmail.com;9934,234",
+                "2706458;Yamamoto, Pedro ;1161117727 ; yama.que.yama@gmail.com;234,234",
+                "2106458;Mimoto, Mariano; 1161177127 ; mariano@gmail.com;234,234",
+                "3406454;Artigas, José Gervasio; 1161177127 ; mariano@yahoo.com.ar;234,234",
+                "4446452;Roca, Julio Argentino; 1161177127 ; roca@yahoo.com.ar; 2934,234",
+                "3506452;Perón, Juand Domingo; 1161177127 ; juanito@frp.org;234,234"
             };
+             */
 
             bool ok = true;
             for (int linea = 1; linea < lista.Count; linea++)
             {
                 string[] campos = lista[linea].Split(';');
 
-                bool tieneCantCampos = campos.Length == 4;
+                bool tieneCantCampos = campos.Length == 5;
                 if (tieneCantCampos == true)
                 {
                     string dni = campos[0];
-                    StringBuilder telefono = new StringBuilder(campos[1]);
-                    string email = campos[2];
-                    string monto = campos[3];
+                    string apellidoYNombre = campos[1];
+                    StringBuilder telefono = new StringBuilder(campos[2]);
+                    string email = campos[3];
+                    string monto = campos[4];
 
                     #region normalización y validación del DNI
                     //normalizar dni.
@@ -83,6 +85,26 @@ namespace Ej1
                         tieneChrValidosDNI &= esValido;
                         if (esValido == false)
                             msgChrNoValidosDNI += $"{{pos:{idx+1}, char:{{ {dni[idx]}}} }},";
+                    }
+                    //
+                    #endregion
+
+                    #region normalización y validación del APELLIDO Y NOMBRE
+                    //normalizar apellido y nombre.
+                    apellidoYNombre = apellidoYNombre.Trim().ToUpper();
+                    //
+                    //verificar longitud nombre >0
+                    bool esLongitudApellidoYNombre = apellidoYNombre.Length > 0;
+                    //
+                    //verificar si solo hay caracteres numéricos
+                    bool tieneChrValidosApellidoYNombre = true;
+                    string msgChrNoValidosApellidoYNombre = "";
+                    for (int idx = 0; idx < apellidoYNombre.Length; idx++)
+                    {
+                        bool esValido = Char.IsLetter(apellidoYNombre[idx]) || apellidoYNombre[idx] == ',' || apellidoYNombre[idx] == ' '; ; 
+                        tieneChrValidosApellidoYNombre &= esValido;
+                        if (esValido == false)
+                            msgChrNoValidosApellidoYNombre += $"{{pos:{idx + 1}, char:{{ {apellidoYNombre[idx]}}} }},";
                     }
                     //
                     #endregion
@@ -188,6 +210,11 @@ namespace Ej1
                             lbResultados.Items.Add($"\t DNI: longitud:{dni.Length}, esperado entre 7 y 8 digitos.");
                         if (tieneChrValidosDNI == false)
                             lbResultados.Items.Add($"\t DNI: {msgChrNoValidosDNI}");
+
+                        if (esLongitudApellidoYNombre == false)
+                            lbResultados.Items.Add($"\t APELLIDOYNOMBRE: longitud:{apellidoYNombre.Length}, esperado mayor a 0 digitos.");
+                        if (tieneChrValidosApellidoYNombre == false)
+                            lbResultados.Items.Add($"\t APELLIDOYNOMBRE: {msgChrNoValidosApellidoYNombre}");
 
                         if (esLongitudTel == false)
                             lbResultados.Items.Add($"\t TELEFONO: longitud:{telefono.Length}, esperado 10 digitos.");
